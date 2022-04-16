@@ -88,6 +88,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.scalingFactorTextBox);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Values";
             this.Text = "Values";
             this.ResumeLayout(false);

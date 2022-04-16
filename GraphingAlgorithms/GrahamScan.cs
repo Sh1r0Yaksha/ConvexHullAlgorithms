@@ -88,35 +88,21 @@ namespace GraphingAlgorithms
                 int p = l, q;
                 do
                 {
-                    // Add current point to result
                     hull.Add(points[p]);
 
-                    // Search for a point 'q' such that
-                    // orientation(p, q, x) is counterclockwise
-                    // for all points 'x'. The idea is to keep
-                    // track of last visited most counterclock-
-                    // wise point in q. If any point 'i' is more
-                    // counterclock-wise than q, then update q.
+
                     q = (p + 1) % points.Length;
 
                     for (int i = 0; i < points.Length; i++)
                     {
-                        // If i is more counterclockwise than
-                        // current q, then update q
-                        if (orientation(points[p], points[i], points[q])
-                                                            == 1)
-                        {
+                        if (orientation(points[p], points[i], points[q]) == 1) // Check until no more anti-clockwise
                             q = i;
-                        }
-
                     }
 
-                    // Now q is the most counterclockwise with
-                    // respect to p. Set p as q for next iteration,
-                    // so that q is added to result 'hull'
-                    p = q;
 
-                } while (p != l); // While we don't come to first
+                    p = q; // q is most anticlockwise so added it to hull in the next loop
+
+                } while (p != l);
 
                 return hull.ToArray();
 

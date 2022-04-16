@@ -36,6 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(994, 723);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "JarvisMarch";
             this.Text = "JarvisMarch";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.JarvisMarch_Paint);

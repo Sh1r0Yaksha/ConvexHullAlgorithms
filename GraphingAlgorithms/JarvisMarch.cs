@@ -21,9 +21,6 @@ namespace GraphingAlgorithms
 
         private void JarvisMarch_Paint(object sender, PaintEventArgs e)
         {
-            // Create four Pen objects with red,
-            // blue, green, and black colors and
-            // different widths
             Pen redPen = new Pen(Color.Red, 1);
             Pen blackPen = new Pen(Color.Black, 2);
             Brush greenBrush = new SolidBrush(Color.Green);
@@ -67,63 +64,42 @@ namespace GraphingAlgorithms
             int val = (q.X - p.X) * (r.Y - q.Y) - (q.Y - p.Y) * (r.X - q.X);
 
             if (val == 0) return 0; // collinear
-            return (val > 0) ? 1 : -1; // counterclock or clock wise
+            return (val > 0) ? 1 : -1; // positive - counterclock wise, negative - clock wise
         }
 
         public Point[] ConvexHull(Point[] points)
         {
             // There must be at least 3 points
 
-            if (points.Length > 3)
+            if (points.Length >= 3)
             {
                 // Initialize Result
                 List<Point> hull = new List<Point>();
 
-                // Find the leftmost point
+                //left-most point
                 int l = 0;
                 for (int i = 1; i < points.Length; i++)
                     if (points[i].X < points[l].X)
                         l = i;
-
-                // Start from leftmost point, keep moving
-                // counterclockwise until reach the start point
-                // again. This loop runs O(h) times where h is
-                // number of points in result or output.
+                
                 int p = l, q;
                 do
                 {
-                    // Add current point to result
-                    hull.Add(points[p]);
+                    hull.Add(points[p]); // add points
 
-                    // Search for a point 'q' such that
-                    // orientation(p, q, x) is counterclockwise
-                    // for all points 'x'. The idea is to keep
-                    // track of last visited most counterclock-
-                    // wise point in q. If any point 'i' is more
-                    // counterclock-wise than q, then update q.
                     q = (p + 1) % points.Length;
 
                     for (int i = 0; i < points.Length; i++)
                     {
-                        // If i is more counterclockwise than
-                        // current q, then update q
-                        if (orientation(points[p], points[i], points[q])
-                                                            == 1)
-                        {
-                            q = i;
-                        }
-
+                        if (orientation(points[p], points[i], points[q]) == 1)
+                            q = i; // most counter clockwise
                     }
 
-                    // Now q is the most counterclockwise with
-                    // respect to p. Set p as q for next iteration,
-                    // so that q is added to result 'hull'
-                    p = q;
+                    p = q; // add most counter clockwise to hull
 
                 } while (p != l); // While we don't come to first
 
                 return hull.ToArray();
-
             }
 
             else
@@ -138,8 +114,8 @@ namespace GraphingAlgorithms
         {
             for (int i = 0; i < point.Length; i++)
             {
-                point[i].X = 495 + (Values.scaleValue * point[i].X);
-                point[i].Y = 374 - (Values.scaleValue * point[i].Y);
+                point[i].X = 495 + (Values.scaleValue * point[i].X); // X-ordinate of origin at 495 from left
+                point[i].Y = 374 - (Values.scaleValue * point[i].Y); // Y-ordinate of origin at 374 from top
             }
 
             return point;
