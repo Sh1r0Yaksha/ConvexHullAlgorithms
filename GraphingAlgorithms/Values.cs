@@ -4,11 +4,11 @@ namespace GraphingAlgorithms
     {
         TextBox[] xTextBox;
         TextBox[] yTextBox;
-
         public static Point[] points;
+
         public static int scaleValue;
 
-        int numOfCoordinates = new int();
+        public static int numOfCoordinates = new int();
         Button jarvisMarchButton = new Button();
         Button grahamScanButton = new Button();
 
@@ -25,6 +25,7 @@ namespace GraphingAlgorithms
 
                 xTextBox = new TextBox[numOfCoordinates];
                 yTextBox = new TextBox[numOfCoordinates];
+                points = new Point[numOfCoordinates];
 
                 int initialLabelYLocation = 152;
                 int initialTextBoxYLocation = 175;
@@ -47,7 +48,7 @@ namespace GraphingAlgorithms
                     xTextBox[i].Location = new Point(12, initialTextBoxYLocation + i * 53);
                     xTextBox[i].Size = new Size(80, 27);
 
-                    yTextBox[i] = new TextBox();
+                    yTextBox[i] = new TextBox(); 
                     this.Controls.Add(yTextBox[i]);
                     yTextBox[i].Location = new Point(xTextBox[i].Location.X + 152, xTextBox[i].Location.Y);
                     yTextBox[i].Size = new Size(80, 27);                 
@@ -88,14 +89,17 @@ namespace GraphingAlgorithms
             gs.ShowDialog();
         }
 
+        
+        
+         
+
         private void AddValues()
         {
             try
             {
                 for (int i = 0; i < numOfCoordinates; i++)
                 {
-                    points[i].X = int.Parse(xTextBox[i].Text);
-                    points[i].Y = int.Parse(yTextBox[i].Text);
+                    points[i] = new Point(int.Parse(xTextBox[i].Text), int.Parse(yTextBox[i].Text));
                 }
             }
             catch (Exception ex)

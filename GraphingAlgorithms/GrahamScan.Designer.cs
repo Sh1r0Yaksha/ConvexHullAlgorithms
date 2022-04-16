@@ -1,6 +1,6 @@
 ﻿namespace GraphingAlgorithms
 {
-    partial class JarvisMarch
+    partial class GrahamScan
     {
         /// <summary>
         /// Required designer variable.
@@ -30,15 +30,14 @@
         {
             this.SuspendLayout();
             // 
-            // JarvisMarch
+            // GrahamScan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(994, 723);
-            this.Name = "JarvisMarch";
-            this.Text = "JarvisMarch";
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.JarvisMarch_Paint);
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Name = "GrahamScan";
+            this.Text = "GrahamScan";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.GrahamScan_Paint);
             this.ResumeLayout(false);
 
         }

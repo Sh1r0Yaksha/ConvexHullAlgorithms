@@ -75,7 +75,7 @@
             this.coordNumTextBox.Location = new System.Drawing.Point(12, 101);
             this.coordNumTextBox.Name = "coordNumTextBox";
             this.coordNumTextBox.Size = new System.Drawing.Size(125, 27);
-            this.coordNumTextBox.TabIndex = 4;
+            this.coordNumTextBox.TabIndex = 2;
             // 
             // Values
             // 

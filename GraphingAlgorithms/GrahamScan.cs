@@ -10,16 +10,14 @@ using System.Windows.Forms;
 
 namespace GraphingAlgorithms
 {
-    public partial class JarvisMarch : Form
+    public partial class GrahamScan : Form
     {
-        public JarvisMarch()
+        public GrahamScan()
         {
             InitializeComponent();
         }
 
-        //(0,0) of graph at (495,374)
-
-        private void JarvisMarch_Paint(object sender, PaintEventArgs e)
+        private void GrahamScan_Paint(object sender, PaintEventArgs e)
         {
             // Create four Pen objects with red,
             // blue, green, and black colors and
@@ -28,19 +26,17 @@ namespace GraphingAlgorithms
             Pen blackPen = new Pen(Color.Black, 2);
             Brush greenBrush = new SolidBrush(Color.Green);
 
-            e.Graphics.DrawLine(blackPen, 11, 374, 990, 374); // HORIZONTAL AXIS
-            e.Graphics.DrawLine(blackPen, 495, 0, 495, 758); // VERTICAL AXIS
+            e.Graphics.DrawLine(blackPen, 10, 500, 550, 500); // HORIZONTAL AXIS
+            e.Graphics.DrawLine(blackPen, 10, 500, 10, 0);
 
             Point[] newCoords = CoordinatesInMyAxis(Values.points);
 
-            
+            //(0,0) of graph at (10,500)
 
-            for (int i = 0; i < Values.scaleValue * 500; i += Values.scaleValue)
+            for (int i = Values.scaleValue; i < Values.scaleValue * 13; i += Values.scaleValue)
             {
-                e.Graphics.DrawLine(blackPen, i + 495, 371, i + 495, 377); // x-axis labels
-                e.Graphics.DrawLine(blackPen, 495 - i, 371, 495 - i, 377);
-                e.Graphics.DrawLine(blackPen, 492, i + 374, 498, i + 374); // y-axis labels
-                e.Graphics.DrawLine(blackPen, 492, 374 - i, 498, 374 - i);
+                e.Graphics.DrawLine(blackPen, i + 10, 497, i + 10, 503); // x-axis labels
+                e.Graphics.DrawLine(blackPen, 7, (500 - i), 13, (500 - i)); // y-axis labels
             }
 
             for (int i = 0; i < newCoords.Length; i++)
@@ -136,11 +132,11 @@ namespace GraphingAlgorithms
 
         public Point[] CoordinatesInMyAxis(Point[] point)
         {
-            for (int i = 0; i < point.Length; i++)
-            {
-                point[i].X = 495 + (Values.scaleValue * point[i].X);
-                point[i].Y = 374 - (Values.scaleValue * point[i].Y);
-            }
+            //for (int i = 0; i < point.Length; i++)
+            //{
+            //    point[i].X = 10 + (Values.Scale * point[i].X);
+            //    point[i].Y = 500 - (Values.Scale * point[i].Y);
+            //}
 
             return point;
         }
