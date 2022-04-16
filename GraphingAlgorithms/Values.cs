@@ -109,6 +109,11 @@ namespace GraphingAlgorithms
             
         }
 
-
+        private void reset_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Values values = new Values();
+            values.ShowDialog();          
+        }
     }
 }

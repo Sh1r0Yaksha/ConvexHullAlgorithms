@@ -33,6 +33,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.coordNumApplyButton = new System.Windows.Forms.Button();
             this.coordNumTextBox = new System.Windows.Forms.TextBox();
+            this.reset = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -77,12 +78,23 @@
             this.coordNumTextBox.Size = new System.Drawing.Size(125, 27);
             this.coordNumTextBox.TabIndex = 2;
             // 
+            // reset
+            // 
+            this.reset.Location = new System.Drawing.Point(143, 30);
+            this.reset.Name = "reset";
+            this.reset.Size = new System.Drawing.Size(94, 29);
+            this.reset.TabIndex = 4;
+            this.reset.Text = "Reset";
+            this.reset.UseVisualStyleBackColor = true;
+            this.reset.Click += new System.EventHandler(this.reset_Click);
+            // 
             // Values
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(267, 551);
+            this.Controls.Add(this.reset);
             this.Controls.Add(this.coordNumTextBox);
             this.Controls.Add(this.coordNumApplyButton);
             this.Controls.Add(this.label2);
@@ -103,5 +115,6 @@
         private Label label2;
         private Button coordNumApplyButton;
         private TextBox coordNumTextBox;
+        private Button reset;
     }
 }
