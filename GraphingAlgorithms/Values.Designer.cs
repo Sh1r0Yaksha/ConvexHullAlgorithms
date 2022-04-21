@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Values));
             this.Graham_Scan = new System.Windows.Forms.Button();
             this.Jarvis_March = new System.Windows.Forms.Button();
             this.Reset_Button = new System.Windows.Forms.Button();
@@ -75,8 +76,9 @@
             this.Controls.Add(this.Jarvis_March);
             this.Controls.Add(this.Graham_Scan);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Values";
-            this.Text = "Values";
+            this.Text = "Convex Hull";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Values_Paint);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Values_MouseClick);
             this.ResumeLayout(false);
