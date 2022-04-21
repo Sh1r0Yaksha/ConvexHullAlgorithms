@@ -6,3 +6,5 @@ A small project made using C# and winforms which shows the final convex hulls ma
 
 - To use just select the points on the app by clicking with your mouse and when finished press JM to run the Jarvis March algorithm and GS to run the Graham Scan algorithm
 - Press Reset to reset everything and select new points
+
+![Demo](GIFs/JM.gif)
