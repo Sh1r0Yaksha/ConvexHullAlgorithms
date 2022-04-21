@@ -2,118 +2,132 @@ namespace GraphingAlgorithms
 {
     public partial class Values : Form
     {
-        TextBox[] xTextBox;
-        TextBox[] yTextBox;
-        public static Point[] points;
 
-        public static int scaleValue;
-
-        public static int numOfCoordinates = new int();
-        Button jarvisMarchButton = new Button();
-        Button grahamScanButton = new Button();
+        List<Point> points = new List<Point>();
+        Pen blackPen = new Pen(Color.Black, 2);
+        Pen redPen = new Pen(Color.Red, 1);
+        
 
         public Values()
         {
             InitializeComponent();
         }
 
-        private void coordNumApplyButton_Click(object sender, EventArgs e)
+        int orientation(Point p, Point q, Point r)
         {
-            try
+            int val = (q.X - p.X) * (r.Y - q.Y) - (q.Y - p.Y) * (r.X - q.X);
+
+            if (val == 0) return 0; // collinear
+            return (val > 0) ? 1 : -1; // positive - counterclock wise, negative - clock wise
+        }
+
+        public Point[] JarvisMarch(List<Point> points)
+        {
+            // There must be at least 3 points
+            if (points.Count >= 3)
             {
-                numOfCoordinates = int.Parse(coordNumTextBox.Text);
+                List<Point> hull = new List<Point>();
 
-                xTextBox = new TextBox[numOfCoordinates];
-                yTextBox = new TextBox[numOfCoordinates];
-                points = new Point[numOfCoordinates];
+                //left-most point
+                int l = 0;
+                for (int i = 1; i < points.Count; i++)
+                    if (points[i].X < points[l].X)
+                        l = i;
 
-                int initialLabelYLocation = 152;
-                int initialTextBoxYLocation = 175;
-
-                for (int i = 0; i < numOfCoordinates; i++)
+                int p = l, q;
+                do
                 {
-                    Label labelX = new Label();
-                    this.Controls.Add(labelX);
-                    labelX.Text = $"X{i + 1}:";
-                    labelX.Location = new Point(35, initialLabelYLocation + i * 53);
+                    hull.Add(points[p]);
 
-                    Label labelY = new Label();
-                    this.Controls.Add(labelY);
-                    labelY.Text = $"Y{i + 1}:";
-                    labelY.TextAlign = ContentAlignment.TopRight;
-                    labelY.Location = new Point(labelX.Location.X + 80, initialLabelYLocation + i * 53);
+                    q = (p + 1) % points.Count;
 
-                    xTextBox[i] = new TextBox();
-                    this.Controls.Add(xTextBox[i]);
-                    xTextBox[i].Location = new Point(12, initialTextBoxYLocation + i * 53);
-                    xTextBox[i].Size = new Size(80, 27);
+                    for (int i = 0; i < points.Count; i++)
+                    {
+                        if (orientation(points[p], points[i], points[q]) == 1)
+                            q = i; // most counter clockwise
+                    }
 
-                    yTextBox[i] = new TextBox(); 
-                    this.Controls.Add(yTextBox[i]);
-                    yTextBox[i].Location = new Point(xTextBox[i].Location.X + 152, xTextBox[i].Location.Y);
-                    yTextBox[i].Size = new Size(80, 27);                 
-                }
+                    p = q; // add most counter clockwise to hull
 
-                this.Controls.Add(jarvisMarchButton);
-                jarvisMarchButton.Location = new Point(xTextBox[numOfCoordinates - 1].Location.X, xTextBox[numOfCoordinates - 1].Location.Y + 53);
-                jarvisMarchButton.Text = "JM";
-                jarvisMarchButton.Size = new Size(80, 27);
-                jarvisMarchButton.Click += JM_Click;
+                } while (p != l); // While we don't come to first
 
-                grahamScanButton.Location = new Point(yTextBox[numOfCoordinates - 1].Location.X, yTextBox[numOfCoordinates - 1].Location.Y + 53);
-                this.Controls.Add(grahamScanButton);
-                grahamScanButton.Text = "GM";
-                grahamScanButton.Size = new Size(80, 27);
-                grahamScanButton.Click += GS_Click;
-
-                scaleValue = int.Parse(scalingFactorTextBox.Text);
+                return hull.ToArray();
             }
-            catch (Exception ex)
+
+            else
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("At least three points are required to make a polygon!");
+                Point[] nLessThan3Points = { new Point(0, 0), new Point(0, 0) };
+                return nLessThan3Points;
             }
+        }
+
+        // Origin at (495,374)
+        private void Values_Paint(object sender, PaintEventArgs e)
+        {
+            Pen blackPen = new Pen(Color.Black, 2);
+
+            e.Graphics.DrawLine(blackPen, 11, 374, 990, 374); // HORIZONTAL AXIS
+            e.Graphics.DrawLine(blackPen, 495, 0, 495, 758); // VERTICAL AXIS
+        }
+
+        private void Values_MouseClick(object sender, MouseEventArgs e)
+        {
+            Graphics g = this.CreateGraphics();
+            g.FillEllipse(new SolidBrush(Color.Green), e.X - 2, e.Y - 2, 4, 4);
+
+            points.Add(new Point(e.X, e.Y));
+        }
+
+        private void Jarvis_March_Click(object sender, EventArgs e)
+        {
+            Graphics g = this.CreateGraphics();
+
             
-        }
 
-        private void JM_Click(object sender, EventArgs e)
-        {
-            AddValues();
-            JarvisMarch jm = new JarvisMarch();
-            jm.ShowDialog();
-        }
+            Point[] hullPoints = JarvisMarch(points);
 
-        private void GS_Click(object sender, EventArgs e)
-        {
-            AddValues();
-            GrahamScan gs = new GrahamScan();
-            gs.ShowDialog();
-        }
 
-        
-        
-         
-
-        private void AddValues()
-        {
-            try
+            for (int i = 0; i < hullPoints.Length - 1; i++)
             {
-                for (int i = 0; i < numOfCoordinates; i++)
-                {
-                    points[i] = new Point(int.Parse(xTextBox[i].Text), int.Parse(yTextBox[i].Text));
-                }
+                Thread.Sleep(500);
+                g.DrawLine(redPen, hullPoints[i].X, hullPoints[i].Y, hullPoints[i + 1].X, hullPoints[i + 1].Y);
+
+
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            Thread.Sleep(500);
+            g.DrawLine(redPen, hullPoints[hullPoints.Length - 1].X, hullPoints[hullPoints.Length - 1].Y, hullPoints[0].X, hullPoints[0].Y);
+
+        }
+
+        private void Reset_Button_Click(object sender, EventArgs e)
+        {            
+            points.Clear();
+            Graphics g = this.CreateGraphics();
+
+            g.Clear(Color.White);
+
+            g.DrawLine(blackPen, 11, 374, 990, 374); // HORIZONTAL AXIS
+            g.DrawLine(blackPen, 495, 0, 495, 758); // VERTICAL AXIS
+
+        }
+
+        private void Graham_Scan_Click(object sender, EventArgs e)
+        {
+            Graphics g = this.CreateGraphics();
+
+            Point[] hullPoints  = GrahamScan.GrahamScanMethod(points.ToArray());
             
-        }
 
-        private void reset_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            Values values = new Values();
-            values.ShowDialog();          
+            for (int i = 0; i < hullPoints.Length - 1; i++)
+            {
+                Thread.Sleep(500);
+                g.DrawLine(redPen, hullPoints[i].X, hullPoints[i].Y, hullPoints[i + 1].X, hullPoints[i + 1].Y);
+
+            }
+            Thread.Sleep(500);
+            g.DrawLine(redPen, hullPoints[hullPoints.Length - 1].X, hullPoints[hullPoints.Length - 1].Y, hullPoints[0].X, hullPoints[0].Y);
+
         }
     }
 }

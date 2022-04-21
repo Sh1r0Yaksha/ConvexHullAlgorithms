@@ -28,93 +28,65 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.scalingFactorTextBox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.coordNumApplyButton = new System.Windows.Forms.Button();
-            this.coordNumTextBox = new System.Windows.Forms.TextBox();
-            this.reset = new System.Windows.Forms.Button();
+            this.Graham_Scan = new System.Windows.Forms.Button();
+            this.Jarvis_March = new System.Windows.Forms.Button();
+            this.Reset_Button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // label1
+            // Graham_Scan
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(142, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Enter scale of Graph";
+            this.Graham_Scan.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.Graham_Scan.Location = new System.Drawing.Point(888, 682);
+            this.Graham_Scan.Name = "Graham_Scan";
+            this.Graham_Scan.Size = new System.Drawing.Size(94, 29);
+            this.Graham_Scan.TabIndex = 0;
+            this.Graham_Scan.Text = "GS";
+            this.Graham_Scan.UseVisualStyleBackColor = false;
+            this.Graham_Scan.Click += new System.EventHandler(this.Graham_Scan_Click);
             // 
-            // scalingFactorTextBox
+            // Jarvis_March
             // 
-            this.scalingFactorTextBox.Location = new System.Drawing.Point(12, 32);
-            this.scalingFactorTextBox.Name = "scalingFactorTextBox";
-            this.scalingFactorTextBox.Size = new System.Drawing.Size(125, 27);
-            this.scalingFactorTextBox.TabIndex = 1;
+            this.Jarvis_March.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.Jarvis_March.Location = new System.Drawing.Point(12, 682);
+            this.Jarvis_March.Name = "Jarvis_March";
+            this.Jarvis_March.Size = new System.Drawing.Size(94, 29);
+            this.Jarvis_March.TabIndex = 1;
+            this.Jarvis_March.Text = "JM";
+            this.Jarvis_March.UseVisualStyleBackColor = false;
+            this.Jarvis_March.Click += new System.EventHandler(this.Jarvis_March_Click);
             // 
-            // label2
+            // Reset_Button
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 76);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(198, 20);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Enter number of coordinates";
-            // 
-            // coordNumApplyButton
-            // 
-            this.coordNumApplyButton.Location = new System.Drawing.Point(143, 101);
-            this.coordNumApplyButton.Name = "coordNumApplyButton";
-            this.coordNumApplyButton.Size = new System.Drawing.Size(94, 27);
-            this.coordNumApplyButton.TabIndex = 3;
-            this.coordNumApplyButton.Text = "Apply";
-            this.coordNumApplyButton.UseVisualStyleBackColor = true;
-            this.coordNumApplyButton.Click += new System.EventHandler(this.coordNumApplyButton_Click);
-            // 
-            // coordNumTextBox
-            // 
-            this.coordNumTextBox.Location = new System.Drawing.Point(12, 101);
-            this.coordNumTextBox.Name = "coordNumTextBox";
-            this.coordNumTextBox.Size = new System.Drawing.Size(125, 27);
-            this.coordNumTextBox.TabIndex = 2;
-            // 
-            // reset
-            // 
-            this.reset.Location = new System.Drawing.Point(143, 30);
-            this.reset.Name = "reset";
-            this.reset.Size = new System.Drawing.Size(94, 29);
-            this.reset.TabIndex = 4;
-            this.reset.Text = "Reset";
-            this.reset.UseVisualStyleBackColor = true;
-            this.reset.Click += new System.EventHandler(this.reset_Click);
+            this.Reset_Button.Location = new System.Drawing.Point(888, 12);
+            this.Reset_Button.Name = "Reset_Button";
+            this.Reset_Button.Size = new System.Drawing.Size(94, 29);
+            this.Reset_Button.TabIndex = 2;
+            this.Reset_Button.Text = "Reset";
+            this.Reset_Button.UseVisualStyleBackColor = true;
+            this.Reset_Button.Click += new System.EventHandler(this.Reset_Button_Click);
             // 
             // Values
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(267, 551);
-            this.Controls.Add(this.reset);
-            this.Controls.Add(this.coordNumTextBox);
-            this.Controls.Add(this.coordNumApplyButton);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.scalingFactorTextBox);
-            this.Controls.Add(this.label1);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(994, 723);
+            this.Controls.Add(this.Reset_Button);
+            this.Controls.Add(this.Jarvis_March);
+            this.Controls.Add(this.Graham_Scan);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Values";
             this.Text = "Values";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Values_Paint);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Values_MouseClick);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private Label label1;
-        private TextBox scalingFactorTextBox;
-        private Label label2;
-        private Button coordNumApplyButton;
-        private TextBox coordNumTextBox;
-        private Button reset;
+        private Button Graham_Scan;
+        private Button Jarvis_March;
+        private Button Reset_Button;
     }
 }
