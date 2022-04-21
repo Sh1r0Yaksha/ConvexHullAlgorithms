@@ -1,130 +1,145 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Drawing;
 
 namespace GraphingAlgorithms
 {
-    public partial class GrahamScan : Form
+    internal class GrahamScan
     {
-        public GrahamScan()
+        // To find the Next to top point in stack
+        static Point NextToTop(Stack<Point> s)
         {
-            InitializeComponent();
+            Point p = s.Pop();
+            Point res = s.Peek();
+            s.Push(p);
+            return res;
+        }          
+
+        // For New coordinates with origin at (495, 374) from top left
+        static Point[] NewCoordinates(Point[] points)
+        {            
+            for (int i = 0; i < points.Length; i++)
+            {
+                points[i].X = points[i].X - 495;
+                points[i].Y = 374 - points[i].Y;
+            }
+            return points;
         }
 
-        private void GrahamScan_Paint(object sender, PaintEventArgs e)
+        // To get back old points in terms of coordinates from top left
+        static Point[] OldCoordinates(Point[] points)
         {
-            // Create four Pen objects with red,
-            // blue, green, and black colors and
-            // different widths
-            Pen redPen = new Pen(Color.Red, 1);
-            Pen blackPen = new Pen(Color.Black, 2);
-            Brush greenBrush = new SolidBrush(Color.Green);
-
-            e.Graphics.DrawLine(blackPen, 10, 500, 550, 500); // HORIZONTAL AXIS
-            e.Graphics.DrawLine(blackPen, 10, 500, 10, 0);
-
-            Point[] newCoords = CoordinatesInMyAxis(Values.points);
-
-            //(0,0) of graph at (10,500)
-
-            for (int i = Values.scaleValue; i < Values.scaleValue * 13; i += Values.scaleValue)
+            for (int i = 0; i < points.Length; i++)
             {
-                e.Graphics.DrawLine(blackPen, i + 10, 497, i + 10, 503); // x-axis labels
-                e.Graphics.DrawLine(blackPen, 7, (500 - i), 13, (500 - i)); // y-axis labels
+                points[i].X = points[i].X + 495;
+                points[i].Y = 374 - points[i].Y;
             }
-
-            for (int i = 0; i < newCoords.Length; i++)
-            {
-                e.Graphics.FillEllipse(greenBrush, newCoords[i].X - 2, newCoords[i].Y - 2, 4, 4);
-            }
-
-            Point[] convexHulls = ConvexHull(newCoords);
-
-            for (int i = 0; i < convexHulls.Length - 1; i++)
-            {
-                Thread.Sleep(500);
-                e.Graphics.DrawLine(redPen, convexHulls[i].X, convexHulls[i].Y, convexHulls[i + 1].X, convexHulls[i + 1].Y);
-
-
-            }
-            Thread.Sleep(500);
-            e.Graphics.DrawLine(redPen, convexHulls[convexHulls.Length - 1].X, convexHulls[convexHulls.Length - 1].Y, convexHulls[0].X, convexHulls[0].Y);
-
+            return points;
         }
 
-        public int orientation(Point p, Point q, Point r)
+        static int Orientation(Point p, Point q, Point r)
         {
-            int val = (q.X - p.X) * (r.Y - q.Y) - (q.Y - p.Y) * (r.X - q.X);
+            float val = (float)((q.X - p.X) * (r.Y - q.Y) - (q.Y - p.Y) * (r.X - q.X));
 
             if (val == 0) return 0; // collinear
-            return (val > 0) ? 1 : -1; // counterclock or clock wise
+            return (val > 0) ? 1 : -1; // positive - counterclock wise, negative - clock wise
         }
 
-        public Point[] ConvexHull(Point[] points)
+        static float Slope(Point p, Point q)
         {
-            // There must be at least 3 points
-
-            if (points.Length > 3)
+            if (q.X - p.X != 0)
             {
-                // Initialize Result
-                List<Point> hull = new List<Point>();
-
-                // Find the leftmost point
-                int l = 0;
-                for (int i = 1; i < points.Length; i++)
-                    if (points[i].X < points[l].X)
-                        l = i;
-
-                // Start from leftmost point, keep moving
-                // counterclockwise until reach the start point
-                // again. This loop runs O(h) times where h is
-                // number of points in result or output.
-                int p = l, q;
-                do
-                {
-                    hull.Add(points[p]);
-
-
-                    q = (p + 1) % points.Length;
-
-                    for (int i = 0; i < points.Length; i++)
-                    {
-                        if (orientation(points[p], points[i], points[q]) == 1) // Check until no more anti-clockwise
-                            q = i;
-                    }
-
-
-                    p = q; // q is most anticlockwise so added it to hull in the next loop
-
-                } while (p != l);
-
-                return hull.ToArray();
-
+                return (float)(q.Y - p.Y)/(q.X - p.X);
             }
-
             else
             {
-                List<Point> hull = new List<Point>();
-                hull.Add(new Point(0, 0));
-                return hull.ToArray();
+                return float.MaxValue;
             }
+           
         }
 
-        public Point[] CoordinatesInMyAxis(Point[] point)
-        {
-            //for (int i = 0; i < point.Length; i++)
-            //{
-            //    point[i].X = 10 + (Values.Scale * point[i].X);
-            //    point[i].Y = 500 - (Values.Scale * point[i].Y);
-            //}
+        public static void SortByAngle(Point[] points)
+        {       
+            float[] anglesArray = new float[points.Length];
+            anglesArray[0] = float.MinValue;
 
-            return point;
+            for (int i = 1; i < points.Length; i++)
+            {
+                anglesArray[i] = Slope(points[0], points[i]);
+            }
+
+            Point tempPoint = new Point();
+            float tempAngle = new float();
+            for (int i = 0; i < anglesArray.Length; i++)
+            {
+                for (int j = 1; j < anglesArray.Length - 1; j++)
+                {
+                    if (anglesArray[j] < anglesArray[j+1])
+                    {
+                        tempAngle = anglesArray[j + 1];
+                        anglesArray[j + 1] = anglesArray[j];
+                        anglesArray[j] = tempAngle;
+
+                        tempPoint = points[j + 1];
+                        points[j + 1] = points[j];
+                        points[j] = tempPoint;
+                    }
+                }
+            }
+
+        }
+
+
+        public static Point[] GrahamScanMethod(Point[] pointsList)
+        {
+            if (pointsList.Length >= 3)
+            {
+                Point[] myPoints = NewCoordinates(pointsList);
+                
+                //left-most point
+                int l = 0;
+                for (int i = 0; i < myPoints.Length; i++)
+                    if (myPoints[i].X <= myPoints[l].X)
+                        l = i;
+
+
+                // Swap Points
+                Point temp = myPoints[l];
+                myPoints[l] = myPoints[0];
+                myPoints[0] = temp;
+
+
+                SortByAngle(myPoints);
+
+                Stack<Point> pointsStack = new Stack<Point>();
+
+                pointsStack.Push(myPoints[0]);
+                pointsStack.Push(myPoints[1]);
+
+                for (int i = 2; i < myPoints.Length; i++)
+                {
+                    // Check Clockwise
+                    if (Orientation(NextToTop(pointsStack), pointsStack.Peek(), myPoints[i]) <= 0)
+                    {
+                        pointsStack.Push(myPoints[i]);
+                    }
+                    else
+                    {
+                        pointsStack.Pop();
+                        i--;
+                    }
+                }
+                return OldCoordinates(pointsStack.ToArray());
+            }
+            else
+            {
+                MessageBox.Show("At least three points are required to make a polygon!");
+                Point[] nLessThan3Points = { new Point(0, 0), new Point(0, 0) };
+                return nLessThan3Points;
+            }
         }
     }
 }
